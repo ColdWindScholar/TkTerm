@@ -340,7 +340,6 @@ Third line ...
         ########################################################################
 
         fieldTexts = {}
-        isError = False
 
         label_terminal = tk.Label(frameSettings, text="Terminal", font="Helvetica 16 bold")
         label_cursor = tk.Label(frameSettings, text="Cursor", font="Helvetica 16 bold")
@@ -360,11 +359,11 @@ Third line ...
 
         frameFontSize = tk.Frame(frameSettings)
         tk.Button(frameFontSize, text=" - ", relief=GROOVE,
-                                        command=lambda: _change_font_size(mode="decrease")).pack(side=LEFT)
+                  command=lambda: _change_font_size(mode="decrease")).pack(side=LEFT)
         tk.Entry(frameFontSize, textvariable=fontSizeFieldText, relief=FLAT, justify=CENTER,
-                                   width=5).pack(side=LEFT, ipady=3)
+                 width=5).pack(side=LEFT, ipady=3)
         tk.Button(frameFontSize, text=" + ", relief=GROOVE,
-                                       command=lambda: _change_font_size(mode="increase")).pack(side=LEFT)
+                  command=lambda: _change_font_size(mode="increase")).pack(side=LEFT)
 
         label_terminal.grid(sticky="W", ipady=10, row=2)
 
