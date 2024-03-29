@@ -668,13 +668,9 @@ class TerminalWidget(tk.Frame):
         """ On pressing Return, execute the command """
 
         # Caret character differs on Windows and Unix
-        if os.name == "nt":
-            CARET = "^"
-        else:
-            CARET = "\\"
+        CARET = "^" if os.name == "nt" else "\\"
 
-        cmd = self.get_cmd()
-        cmd = cmd.strip()
+        cmd = self.get_cmd().strip()
 
         # Empty command - pass
         if cmd == "":

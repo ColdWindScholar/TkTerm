@@ -77,7 +77,7 @@ class Terminal(tk.Frame):
     def on_resize(self, event):
         """Auto scroll to bottom when resize event happens"""
 
-        first_visible_line = self.TerminalScreen.index("@0,0")
+        self.TerminalScreen.index("@0,0")
 
         if self.scrollbar.get()[1] >= 1:
             self.TerminalScreen.see(END)

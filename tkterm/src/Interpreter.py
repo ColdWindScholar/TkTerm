@@ -45,10 +45,7 @@ class Interpreter:
             Interpreter.BACKENDS[name] = InterpreterShell(path)
 
         # Set default interpreter based on operating system
-        if os.name == 'nt':
-            Interpreter.DEFAULT_SHELL = "windows"
-        else:
-            Interpreter.DEFAULT_SHELL = "bash"
+        Interpreter.DEFAULT_SHELL = "windows" if os.name == 'nt' else "bash"
 
         Interpreter._ICONS.clear()
 

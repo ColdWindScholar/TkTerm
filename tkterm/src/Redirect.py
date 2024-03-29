@@ -24,7 +24,7 @@ class Redirect:
         # Work out if the current line is a command or output
         start_pos = get_last_line(self.TerminalScreen)
         line = self.TerminalScreen.get(start_pos, END)
-        isCmd = True if line.startswith(self.app.get_last_basename()) else False
+        is_cmd = True if line.startswith(self.app.get_last_basename()) else False
 
         self.TerminalScreen.insert("end", text)
 
@@ -32,7 +32,7 @@ class Redirect:
             self.TerminalScreen.see("end")
 
         ########################################################################
-        ## Adding color tags
+        #  Adding color tags
         ########################################################################
 
         # Error output
@@ -65,7 +65,7 @@ class Redirect:
 
             # Normal output - could be command or its output
             # needs start_pos - 1
-            elif not isCmd:
+            elif not is_cmd:
                 # start_pos = get_last_line(self.TerminalScreen) - 1
                 end_pos = self.TerminalScreen.index("insert")
                 self.TerminalScreen.tag_add("output", start_pos, end_pos)
