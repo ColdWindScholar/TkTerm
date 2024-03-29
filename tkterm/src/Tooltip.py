@@ -5,6 +5,7 @@ class Tooltip(object):
     """
     create a tooltip for a given widget
     """
+
     def __init__(self, widget, text='widget info', manual=False, delay=False):
         self.widget = widget
         self.text = text
@@ -44,8 +45,8 @@ class Tooltip(object):
         self.tw.wm_overrideredirect(True)
         self.tw.wm_geometry("+%d+%d" % (x, y))
         label = tk.Label(self.tw, text=self.text, justify='left',
-                       relief='solid', borderwidth=1, wraplength=150,
-                       font=("Helvetica", "7", "normal"))
+                         relief='solid', borderwidth=1, wraplength=150,
+                         font=("Helvetica", "7", "normal"))
 
         label.pack(ipadx=1)
 
