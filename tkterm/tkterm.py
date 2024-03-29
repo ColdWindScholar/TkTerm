@@ -1,13 +1,9 @@
-import tkinter as tk
-from tkinter import *
-from tkinter import ttk
-
-from tkinter import font
-from tkinter.font import Font
-
+import json
 import os
 import sys
-import json
+import tkinter as tk
+from tkinter import *
+from tkinter import font
 
 # Add to system path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -17,6 +13,7 @@ from src.Interpreter import Interpreter
 from src.ExitDiaglogBox import ExitDiaglogBox
 from src.Utils import get_absolute_path
 from src.Config import TkTermConfig
+
 
 class Terminal(tk.Frame):
     """ Terminal widget """
@@ -89,6 +86,7 @@ class Terminal(tk.Frame):
 
         # self.statusText.set(self.TerminalScreen.winfo_height())
 
+
 def main():
     """ Main function """
 
@@ -104,6 +102,7 @@ def main():
 
     ExitDiaglogBox(root, icon)
     root.mainloop()
+
 
 if __name__ == "__main__":
     main()

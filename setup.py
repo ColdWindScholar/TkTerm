@@ -1,6 +1,7 @@
 from tkterm import __version__
 from setuptools import setup, find_packages
 
+
 def read_from_file(path):
     """Return content from file"""
 
@@ -8,6 +9,7 @@ def read_from_file(path):
         text = f.read()
 
     return text
+
 
 attrs = dict(
     name="tkterm",

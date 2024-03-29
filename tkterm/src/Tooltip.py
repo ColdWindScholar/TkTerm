@@ -1,11 +1,10 @@
 import tkinter as tk
-from tkinter import *
-from tkinter import ttk
+
 
 class Tooltip(object):
-    '''
+    """
     create a tooltip for a given widget
-    '''
+    """
     def __init__(self, widget, text='widget info', manual=False, delay=False):
         self.widget = widget
         self.text = text
@@ -30,7 +29,6 @@ class Tooltip(object):
         self.create()
 
     def create(self):
-        x = y = 0
         x, y, cx, cy = self.widget.bbox("insert")
 
         if self.manual:

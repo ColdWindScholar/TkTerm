@@ -1,19 +1,19 @@
 import os
 
-class TkTermConfig():
 
+class TkTermConfig:
     # Default config
     DEFAULT_CONFIG = {
-        "fg"                : "#00A79D",
-        "bg"                : "#282C34",
-        "insertbackground"  : "white",
-        "error"             : "red",
-        "output"            : "#E6E6E6",
-        "basename"          : "#0080ff",
-        "cursorshape"       : "bar",
-        "selectbackground"  : "#464E5E",
-        "fontfamily"        : "Cascadia Code SemiLight",
-        "fontsize"          : 9
+        "fg": "#00A79D",
+        "bg": "#282C34",
+        "insertbackground": "white",
+        "error": "red",
+        "output": "#E6E6E6",
+        "basename": "#0080ff",
+        "cursorshape": "bar",
+        "selectbackground": "#464E5E",
+        "fontfamily": "Cascadia Code SemiLight",
+        "fontsize": 9
     }
 
     # Curernt config
@@ -25,7 +25,7 @@ class TkTermConfig():
     @staticmethod
     def get_default(key=None):
         if key:
-            assert(key in TkTermConfig.DEFAULT_CONFIG.keys())
+            assert (key in TkTermConfig.DEFAULT_CONFIG.keys())
             return TkTermConfig.DEFAULT_CONFIG[key]
 
         return TkTermConfig.DEFAULT_CONFIG.copy()
@@ -37,7 +37,7 @@ class TkTermConfig():
     @staticmethod
     def get_config(key=None):
         if key:
-            assert(key in TkTermConfig.CONFIG)
+            assert (key in TkTermConfig.CONFIG)
             return TkTermConfig.CONFIG[key]
 
         return TkTermConfig.CONFIG.copy()
@@ -48,7 +48,7 @@ class TkTermConfig():
 
     @staticmethod
     def set_config_key(key, value):
-        assert(key in TkTermConfig.CONFIG.keys())
+        assert (key in TkTermConfig.CONFIG.keys())
         TkTermConfig.CONFIG[key] = value
 
     @staticmethod

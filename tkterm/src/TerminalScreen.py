@@ -1,29 +1,20 @@
+import platform
+import sys
 import tkinter as tk
-import tkinter.messagebox
-
+import traceback
 from tkinter import *
 from tkinter import ttk
-
-from tkinter import font
 from tkinter.font import Font
 
-import os
-import sys
-import platform
-import threading
-import subprocess
-
-from .Utils import *
+from backend.KThread import KThread
 
 from .Config import TkTermConfig
 from .Interpreter import Interpreter
 from .Redirect import Redirect
-from backend.KThread import KThread
+from .Utils import *
 
-import traceback
 
 class TerminalWidget(tk.Frame):
-
     SHELL_MAPPINGS = Interpreter.MAPPINGS
 
     def __init__(self, parent, **kwargs):
@@ -71,7 +62,7 @@ class TerminalWidget(tk.Frame):
         self.frameScrollbar.pack_propagate(0)
 
         self.scrollbar = ttk.Scrollbar(self.frameScrollbar, style="Terminal.Vertical.TScrollbar", orient="vertical")
-        self.scrollbar.pack(anchor=E, side=RIGHT, fill=Y, expand=True, padx=(0,3))
+        self.scrollbar.pack(anchor=E, side=RIGHT, fill=Y, expand=True, padx=(0, 3))
 
         self.TerminalScreen['yscrollcommand'] = self.scrollbar.set
         self.scrollbar['command'] = self.TerminalScreen.yview
@@ -91,7 +82,8 @@ class TerminalWidget(tk.Frame):
         ########################################################################
         self.frameStatusBar = ttk.Frame(self, style="Status.TFrame")
 
-        self.returnCodeLabel = Label(self.frameStatusBar, text="RC: 0", fg="white", bg="green", font=("Helvetica", 8), anchor=W, width=8)
+        self.returnCodeLabel = Label(self.frameStatusBar, text="RC: 0", fg="white", bg="green", font=("Helvetica", 8),
+                                     anchor=W, width=8)
         self.returnCodeLabel.pack(side=LEFT)
 
         self.statusText = StringVar()
@@ -103,19 +95,19 @@ class TerminalWidget(tk.Frame):
         ## Style configure for ttk widgets
         ########################################################################
         style_combobox = {
-            "relief"                : FLAT,
-            "borderwidth"           : 0,
-            "highlightthickness"    : 0
+            "relief": FLAT,
+            "borderwidth": 0,
+            "highlightthickness": 0
         }
 
         self.style = ttk.Style(self)
         self.style.theme_use('default')
         self.style.configure("Shell.TCombobox", **style_combobox)
         self.style.configure("Terminal.Vertical.TScrollbar",
-            background="#3A3E48",
-            borderwidth=0,
-            relief=FLAT
-        )
+                             background="#3A3E48",
+                             borderwidth=0,
+                             relief=FLAT
+                             )
 
         self.style.configure("Status.TFrame", background="#21252B", borderwidth=0, relief=FLAT)
 
@@ -124,7 +116,8 @@ class TerminalWidget(tk.Frame):
         self.option_add('*TCombobox*Listbox*Foreground', "#9DA5B4")
         self.option_add('*TCombobox*Listbox.font', ("Helvetica", 8))
 
-        self.shellComboBox = ttk.Combobox(self.frameStatusBar, style="Shell.TCombobox", state="readonly", width=8, font=("Helvetica", 8))
+        self.shellComboBox = ttk.Combobox(self.frameStatusBar, style="Shell.TCombobox", state="readonly", width=8,
+                                          font=("Helvetica", 8))
         self.shellComboBox.pack(side=RIGHT, padx=0)
         self.shellComboBox['values'] = list(Interpreter.MAPPINGS.keys())
 
@@ -134,7 +127,6 @@ class TerminalWidget(tk.Frame):
         self.shellComboBox.bind("<<ComboboxSelected>>", self.update_shell)
         # self.shellComboBox.bind("<Button-1>", self.do_leftClick)
         self.shellComboBox.bind("<Escape>", self.do_leftClickRelease, add="+")
-
 
         ########################################################################
         ## Set style colours
@@ -150,7 +142,7 @@ class TerminalWidget(tk.Frame):
         self.frameStatusBar.pack(side=BOTTOM, fill=X)
         self.frameTerminal.pack(side=TOP, fill=BOTH, expand=True)
         self.frameScrollbar.pack(side=RIGHT, fill=Y)
-        self.TerminalScreen.pack(side=LEFT, fill=BOTH, expand=True, padx=(4,0), pady=(4,0))
+        self.TerminalScreen.pack(side=LEFT, fill=BOTH, expand=True, padx=(4, 0), pady=(4, 0))
 
         ########################################################################
         ## Key bindings
@@ -167,7 +159,8 @@ class TerminalWidget(tk.Frame):
         if (platform.system() == "Windows") or (platform.system() == "Darwin"):
             self.TerminalScreen.bind('<Shift-Tab>', lambda e: self.event_generate("<<eventCyclePrevTab>>") or "break")
         else:
-            self.TerminalScreen.bind('<ISO_Left_Tab>', lambda e: self.event_generate("<<eventCyclePrevTab>>") or "break")
+            self.TerminalScreen.bind('<ISO_Left_Tab>',
+                                     lambda e: self.event_generate("<<eventCyclePrevTab>>") or "break")
 
         self.bind_keys()
 
@@ -201,7 +194,6 @@ class TerminalWidget(tk.Frame):
         if (self.terminalThread is not None) and (self.terminalThread.is_alive()):
             self.after(100, self.check_process_terminate)
 
-
     def reset(self):
 
         # Caret handling and multiline commands
@@ -215,8 +207,8 @@ class TerminalWidget(tk.Frame):
 
         TerminalColors = TkTermConfig.get_config()
 
-        self.TerminalScreen["bg"]               = TerminalColors["bg"]
-        self.TerminalScreen["fg"]               = TerminalColors["fg"]
+        self.TerminalScreen["bg"] = TerminalColors["bg"]
+        self.TerminalScreen["fg"] = TerminalColors["fg"]
         self.TerminalScreen["selectbackground"] = TerminalColors["selectbackground"]
 
         self.frameTerminal["bg"] = TerminalColors["bg"]
@@ -244,15 +236,15 @@ class TerminalWidget(tk.Frame):
         self.style.configure("Terminal.Vertical.TScrollbar", arrowcolor=TerminalColors["bg"])
 
         self.style.map('Terminal.Vertical.TScrollbar',
-            background=[
-                ('pressed', "#9DA5B4"),
-                ('disabled', TerminalColors["bg"])
-            ],
-            arrowcolor=[
-                ('disabled', TerminalColors["bg"]),
-                ('active', TerminalColors["bg"])
-            ]
-        )
+                       background=[
+                           ('pressed', "#9DA5B4"),
+                           ('disabled', TerminalColors["bg"])
+                       ],
+                       arrowcolor=[
+                           ('disabled', TerminalColors["bg"]),
+                           ('active', TerminalColors["bg"])
+                       ]
+                       )
 
         ########################################################################
         ## Shell selection combobox
@@ -262,9 +254,9 @@ class TerminalWidget(tk.Frame):
         self.style.map('Shell.TCombobox', fieldbackground=[('hover', "#2F333D")])
         self.style.map('Shell.TCombobox', arrowcolor=[('readonly', '#9DA5B4')])
 
-        self.style.configure("Shell.TCombobox", fieldbackground="#21252B") # current field background
-        self.style.configure("Shell.TCombobox", background="#21252B") # arrow box background
-        self.style.configure("Shell.TCombobox", foreground="#9DA5B4") # current field foreground
+        self.style.configure("Shell.TCombobox", fieldbackground="#21252B")  # current field background
+        self.style.configure("Shell.TCombobox", background="#21252B")  # arrow box background
+        self.style.configure("Shell.TCombobox", foreground="#9DA5B4")  # current field foreground
 
         ########################################################################
         ## Status bar
@@ -282,7 +274,6 @@ class TerminalWidget(tk.Frame):
         elif TerminalColors["cursorshape"] == "block":
             self.TerminalScreen['blockcursor'] = True
             self.TerminalScreen['insertwidth'] = 0
-
 
     def on_scrollbar_enter(self, event):
         """
@@ -324,8 +315,9 @@ class TerminalWidget(tk.Frame):
             else:
                 self.style.configure("Terminal.Vertical.TScrollbar", arrowsize=10)
                 self.style.map('Terminal.Vertical.TScrollbar',
-                    background=[('active', "#9DA5B4"), ('pressed', "#9DA5B4"), ('disabled', TkTermConfig.CONFIG["bg"])]
-                )
+                               background=[('active', "#9DA5B4"), ('pressed', "#9DA5B4"),
+                                           ('disabled', TkTermConfig.CONFIG["bg"])]
+                               )
                 self.style.configure("Terminal.Vertical.TScrollbar", background="#9DA5B4")
 
         else:
@@ -337,43 +329,43 @@ class TerminalWidget(tk.Frame):
                 self.style.configure("Terminal.Vertical.TScrollbar", arrowsize=-10)
                 self.style.configure("Terminal.Vertical.TScrollbar", width=5)
                 self.style.map('Terminal.Vertical.TScrollbar',
-                    background=[('active', "#3A3E48"), ('disabled', TkTermConfig.CONFIG["bg"])]
-                )
+                               background=[('active', "#3A3E48"), ('disabled', TkTermConfig.CONFIG["bg"])]
+                               )
                 self.style.configure("Terminal.Vertical.TScrollbar", background="#3A3E48")
 
     def bind_keys(self):
-        self.TerminalScreen.bind("<FocusOut>",          self.focus_out)
+        self.TerminalScreen.bind("<FocusOut>", self.focus_out)
 
-        self.TerminalScreen.bind("<Return>",            self.do_keyReturn)
-        self.TerminalScreen.bind("<Up>",                self.do_keyUpArrow)
-        self.TerminalScreen.bind("<Down>",              self.do_keyDownArrow)
-        self.TerminalScreen.bind("<BackSpace>",         self.do_keyBackspace)
-        self.TerminalScreen.bind("<Delete>",            lambda event: "")
-        self.TerminalScreen.bind("<End>",               lambda event: "")
-        self.TerminalScreen.bind("<Left>",              self.do_keyLeftArrow)
-        self.TerminalScreen.bind("<Right>",             lambda event: "")
-        self.TerminalScreen.bind("<Button-1>",          self.do_leftClick)
-        self.TerminalScreen.bind("<ButtonRelease-1>",   self.do_leftClickRelease)
-        self.TerminalScreen.bind("<ButtonRelease-2>",   self.do_middleClickRelease)
-        self.TerminalScreen.bind("<Tab>",               self.do_keyTab)
-        self.TerminalScreen.bind("<Home>",              self.do_keyHome)
+        self.TerminalScreen.bind("<Return>", self.do_keyReturn)
+        self.TerminalScreen.bind("<Up>", self.do_keyUpArrow)
+        self.TerminalScreen.bind("<Down>", self.do_keyDownArrow)
+        self.TerminalScreen.bind("<BackSpace>", self.do_keyBackspace)
+        self.TerminalScreen.bind("<Delete>", lambda event: "")
+        self.TerminalScreen.bind("<End>", lambda event: "")
+        self.TerminalScreen.bind("<Left>", self.do_keyLeftArrow)
+        self.TerminalScreen.bind("<Right>", lambda event: "")
+        self.TerminalScreen.bind("<Button-1>", self.do_leftClick)
+        self.TerminalScreen.bind("<ButtonRelease-1>", self.do_leftClickRelease)
+        self.TerminalScreen.bind("<ButtonRelease-2>", self.do_middleClickRelease)
+        self.TerminalScreen.bind("<Tab>", self.do_keyTab)
+        self.TerminalScreen.bind("<Home>", self.do_keyHome)
         self.TerminalScreen.unbind("<B1-Motion>")
 
     def unbind_keys(self):
-        self.TerminalScreen.bind("<Return>",            lambda event: "break")
-        self.TerminalScreen.bind("<Up>",                lambda event: "break")
-        self.TerminalScreen.bind("<Down>",              lambda event: "break")
-        self.TerminalScreen.bind("<BackSpace>",         lambda event: "break")
-        self.TerminalScreen.bind("<Delete>",            lambda event: "break")
-        self.TerminalScreen.bind("<End>",               lambda event: "break")
-        self.TerminalScreen.bind("<Left>",              lambda event: "break")
-        self.TerminalScreen.bind("<Right>",             lambda event: "break")
-        self.TerminalScreen.bind("<Button-1>",          lambda event: "break")
-        self.TerminalScreen.bind("<ButtonRelease-1>",   lambda event: "break")
-        self.TerminalScreen.bind("<ButtonRelease-2>",   lambda event: "break")
-        self.TerminalScreen.bind("<Tab>",               lambda event: "break")
-        self.TerminalScreen.bind("<Home>",              lambda event: "break")
-        self.TerminalScreen.bind("<B1-Motion>",         lambda event: "break")
+        self.TerminalScreen.bind("<Return>", lambda event: "break")
+        self.TerminalScreen.bind("<Up>", lambda event: "break")
+        self.TerminalScreen.bind("<Down>", lambda event: "break")
+        self.TerminalScreen.bind("<BackSpace>", lambda event: "break")
+        self.TerminalScreen.bind("<Delete>", lambda event: "break")
+        self.TerminalScreen.bind("<End>", lambda event: "break")
+        self.TerminalScreen.bind("<Left>", lambda event: "break")
+        self.TerminalScreen.bind("<Right>", lambda event: "break")
+        self.TerminalScreen.bind("<Button-1>", lambda event: "break")
+        self.TerminalScreen.bind("<ButtonRelease-1>", lambda event: "break")
+        self.TerminalScreen.bind("<ButtonRelease-2>", lambda event: "break")
+        self.TerminalScreen.bind("<Tab>", lambda event: "break")
+        self.TerminalScreen.bind("<Home>", lambda event: "break")
+        self.TerminalScreen.bind("<B1-Motion>", lambda event: "break")
 
     def rollWheel(self, event):
         direction = 0
@@ -399,13 +391,12 @@ class TerminalWidget(tk.Frame):
         s = event.state
 
         # Manual way to get the modifiers
-        ctrl  = (s & 0x4) != 0
-        alt   = (s & 0x8) != 0 or (s & 0x80) != 0
+        ctrl = (s & 0x4) != 0
+        alt = (s & 0x8) != 0 or (s & 0x80) != 0
         shift = (s & 0x1) != 0
 
         if ctrl:
             return "break"
-
 
         char = event.char
 
@@ -438,8 +429,6 @@ class TerminalWidget(tk.Frame):
             self.print_basename()
 
     def do_cancel(self, *args):
-
-        import signal
 
         # Kill current running process if there is any
         if (self.terminalThread is not None) and (self.terminalThread.is_alive()):
@@ -501,7 +490,6 @@ class TerminalWidget(tk.Frame):
 
                         # if hasattr(self.process, "stdout") and hasattr(self.process, "stderr"):
                         for line in self.process.stdout:
-
                             # if self.top.processTerminated:
                             #     break
 
@@ -509,7 +497,6 @@ class TerminalWidget(tk.Frame):
 
                         for line in self.process.stderr:
                             self.top.stderr.write(line, end='')
-
 
                     self.returnCode = self.top.currentInterpreter.get_return_code(self.process)
 
@@ -556,7 +543,6 @@ class TerminalWidget(tk.Frame):
             return basename.split("\n")[-1]
 
         return basename
-
 
     def do_keyHome(self, *args):
         """ Press HOME to return to the start position of command """
@@ -609,12 +595,12 @@ class TerminalWidget(tk.Frame):
             last_cmd = cmd.split()[-1]
 
         # Create a pattern to be match with glob
-        match_pattern = last_cmd+'*'
+        match_pattern = last_cmd + '*'
 
         import glob
 
         cd_children = sorted(glob.glob(match_pattern))
-        cd_children = [f+slash if os.path.isdir(f) else f for f in cd_children]
+        cd_children = [f + slash if os.path.isdir(f) else f for f in cd_children]
 
         import re
         import fnmatch
@@ -762,7 +748,6 @@ class TerminalWidget(tk.Frame):
                 self.unbind_keys()
                 self.monitor(self.terminalThread)
 
-
         return 'break'
 
     def do_keyBackspace(self, *args):
@@ -843,7 +828,7 @@ class TerminalWidget(tk.Frame):
     def set_returnCode(self, rc):
         """ Set return code on status bar """
 
-        if(rc != 0):
+        if rc != 0:
             self.returnCodeLabel.configure(bg="red")
         else:
             self.returnCodeLabel.configure(bg="green")

@@ -1,8 +1,8 @@
+import os
+import subprocess
+
 from .InterpreterInterface import InterpreterInterface
 
-import os
-import sys
-import subprocess
 
 class InterpreterShell(InterpreterInterface):
 
@@ -12,10 +12,10 @@ class InterpreterShell(InterpreterInterface):
         self.history = []
 
         self.process_options = {
-            "shell"                 : True,
-            "stdout"                : subprocess.PIPE,
-            "stderr"                : subprocess.PIPE,
-            "universal_newlines"    : True
+            "shell": True,
+            "stdout": subprocess.PIPE,
+            "stderr": subprocess.PIPE,
+            "universal_newlines": True
         }
 
         # Ignore utf-8 decode error which sometimes happens on early terminating
@@ -33,7 +33,7 @@ class InterpreterShell(InterpreterInterface):
         stdout = ""
         stderr = ""
 
-        if (os.name == 'nt'):
+        if os.name == 'nt':
             process = subprocess.Popen(
                 "TASKKILL /F /PID {} /T".format(processThread.pid),
                 stdout=subprocess.PIPE,
@@ -57,7 +57,7 @@ class InterpreterShell(InterpreterInterface):
 
         processThread.wait()
 
-        return (stdout, stderr)
+        return stdout, stderr
 
     def get_return_code(self, process):
         return process.poll()

@@ -1,11 +1,9 @@
-import tkinter as tk
-
 from tkinter import *
-from tkinter import ttk
 
 from .Utils import *
 
-class Redirect():
+
+class Redirect:
     """ Redirect stdout and stderr to be written to Text widget """
 
     def __init__(self, widget, autoscroll=True, stream="stdout"):

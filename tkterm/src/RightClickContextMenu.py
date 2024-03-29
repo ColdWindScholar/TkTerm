@@ -27,22 +27,22 @@ class RightClickContextMenu:
 
     def bind_menu(self):
         self.menu = tk.Menu(self.terminal,
-            tearoff=0,
-            bg="#1D1F23",
-            # bg="white",
-            fg="white",
-            # borderwidth=0,
-            bd=1,
-            relief=FLAT,
-            activebackground="#2c313a",
-            activeforeground="white",
-            selectcolor="red",
-            activeborderwidth=0,
-        )
+                            tearoff=0,
+                            bg="#1D1F23",
+                            # bg="white",
+                            fg="white",
+                            # borderwidth=0,
+                            bd=1,
+                            relief=FLAT,
+                            activebackground="#2c313a",
+                            activeforeground="white",
+                            selectcolor="red",
+                            activeborderwidth=0,
+                            )
 
-        self.menu.add_command(label ="Copy", accelerator=" "*10, command=self._copyClipboard)
-        self.menu.add_command(label ="Paste", command=self._pasteClipboard)
-        self.menu.add_command(label ="Reload", command=self._reloadScreen)
+        self.menu.add_command(label="Copy", accelerator=" " * 10, command=self._copyClipboard)
+        self.menu.add_command(label="Paste", command=self._pasteClipboard)
+        self.menu.add_command(label="Reload", command=self._reloadScreen)
         self.menu.add_separator()
         self.menu.add_command(label="Settings...", command=self._showSettings)
 
@@ -56,7 +56,7 @@ class RightClickContextMenu:
 
         try:
             # self.menu.tk_popup(event.x_root+1, event.y_root+1)
-            self.menu.post(event.x_root+1, event.y_root+1)
+            self.menu.post(event.x_root + 1, event.y_root + 1)
             self.menu.focus_set()
         finally:
             self.menu.grab_release()
@@ -148,7 +148,6 @@ Third line ...
                 sampleTerminal.tag_add("output", start_pos, sampleTerminal.index("insert"))
                 sampleTerminal.tag_config("output", foreground=fieldTexts["output"].get())
 
-
                 start_pos = sampleTerminal.index("insert")
 
                 error_text = "Terminate.\nAn error has occurred"
@@ -161,7 +160,6 @@ Third line ...
 
             sampleTerminal["state"] = "disabled"
 
-
         def _populate_color_fields(name, row, color="white"):
 
             label = tk.Label(frameSettings, text=name)
@@ -170,11 +168,12 @@ Third line ...
             field.set(color)
 
             entry = tk.Entry(frameSettings, textvariable=field, relief=FLAT)
-            button = tk.Button(frameSettings, width=2, height=1, relief=FLAT, cursor="hand2", command= lambda: _choose_color(field))
+            button = tk.Button(frameSettings, width=2, height=1, relief=FLAT, cursor="hand2",
+                               command=lambda: _choose_color(field))
 
             field.trace("w", lambda *args: _update_color(button, field))
 
-            label.grid(sticky="W", padx=(0,10), row=row, column=0)
+            label.grid(sticky="W", padx=(0, 10), row=row, column=0)
             entry.grid(sticky="W", row=row, column=1)
             button.grid(sticky="W", padx=10, row=row, column=2)
 
@@ -195,7 +194,8 @@ Third line ...
         def _choose_color(field):
 
             try:
-                result = colorchooser.askcolor(title="Color Chooser", parent=self.setting_win_top, initialcolor=field.get())
+                result = colorchooser.askcolor(title="Color Chooser", parent=self.setting_win_top,
+                                               initialcolor=field.get())
             except:
                 result = colorchooser.askcolor(title="Color Chooser", parent=self.setting_win_top)
 
@@ -216,20 +216,21 @@ Third line ...
         def _do_apply():
 
             try:
-                TkTermConfig.CONFIG["bg"]               = fieldTexts["background"].get()
-                TkTermConfig.CONFIG["fg"]               = fieldTexts["foreground"].get()
-                TkTermConfig.CONFIG["cursorshape"]      = cursorShapeMappings[cursorCombobox.get()]
-                TkTermConfig.CONFIG["fontfamily"]       = fontFamilyCombobox.get()
-                TkTermConfig.CONFIG["fontsize"]         = fontSizeFieldText.get()
-                TkTermConfig.CONFIG["output"]           = fieldTexts["output"].get()
-                TkTermConfig.CONFIG["error"]            = fieldTexts["error"].get()
-                TkTermConfig.CONFIG["basename"]         = fieldTexts["basename"].get()
+                TkTermConfig.CONFIG["bg"] = fieldTexts["background"].get()
+                TkTermConfig.CONFIG["fg"] = fieldTexts["foreground"].get()
+                TkTermConfig.CONFIG["cursorshape"] = cursorShapeMappings[cursorCombobox.get()]
+                TkTermConfig.CONFIG["fontfamily"] = fontFamilyCombobox.get()
+                TkTermConfig.CONFIG["fontsize"] = fontSizeFieldText.get()
+                TkTermConfig.CONFIG["output"] = fieldTexts["output"].get()
+                TkTermConfig.CONFIG["error"] = fieldTexts["error"].get()
+                TkTermConfig.CONFIG["basename"] = fieldTexts["basename"].get()
                 TkTermConfig.CONFIG["selectbackground"] = fieldTexts["selectbackground"].get()
 
                 self.top.set_color_style()
 
             except:
-                tkinter.messagebox.showerror(title="Invalid input", message="Found invalid input. Please check your settings")
+                tkinter.messagebox.showerror(title="Invalid input",
+                                             message="Found invalid input. Please check your settings")
                 self.setting_win_top.lift()
                 self.setting_win_top.focus_set()
                 return False
@@ -247,9 +248,10 @@ Third line ...
 
             if result:
                 with open(TkTermConfig.CONFIG_FILE, "w") as f:
-                    f.write(json.dumps(TkTermConfig.get_config(), indent = 4))
+                    f.write(json.dumps(TkTermConfig.get_config(), indent=4))
 
-                    tkinter.messagebox.showinfo(title="Configuration saved", message="Successfully saved configuration to file.\n{}".format(f.name))
+                    tkinter.messagebox.showinfo(title="Configuration saved",
+                                                message="Successfully saved configuration to file.\n{}".format(f.name))
 
             else:
                 self.setting_win_top.lift()
@@ -262,7 +264,7 @@ Third line ...
 
         def _change_font_size(mode):
 
-            assert(mode in ["decrease", "increase"])
+            assert (mode in ["decrease", "increase"])
 
             if mode == "decrease":
                 fontSizeFieldText.set(int(fontSizeFieldText.get()) - 1)
@@ -304,7 +306,7 @@ Third line ...
         ########################################################################
 
         tabControl.pack(expand=True, fill=BOTH)
-        tabControl.add(tab1, text ='Appearance')
+        tabControl.add(tab1, text='Appearance')
 
         ########################################################################
         # Frames
@@ -350,17 +352,19 @@ Third line ...
         label_font_family = tk.Label(frameSettings, text="Font family")
 
         cursorShapeMappings = {
-            "Bar ( | )" : "bar",
-            "Block ( █ )" : "block"
+            "Bar ( | )": "bar",
+            "Block ( █ )": "block"
         }
-
 
         fontSizeFieldText = IntVar()
 
         frameFontSize = tk.Frame(frameSettings)
-        buttonFontSizeMinus = tk.Button(frameFontSize, text=" - ", relief=GROOVE, command= lambda:_change_font_size(mode="decrease")).pack(side=LEFT)
-        entry_font_size = tk.Entry(frameFontSize, textvariable=fontSizeFieldText, relief=FLAT, justify=CENTER, width=5).pack(side=LEFT, ipady=3)
-        buttonFontSizePlus = tk.Button(frameFontSize, text=" + ", relief=GROOVE, command= lambda:_change_font_size(mode="increase")).pack(side=LEFT)
+        tk.Button(frameFontSize, text=" - ", relief=GROOVE,
+                                        command=lambda: _change_font_size(mode="decrease")).pack(side=LEFT)
+        tk.Entry(frameFontSize, textvariable=fontSizeFieldText, relief=FLAT, justify=CENTER,
+                                   width=5).pack(side=LEFT, ipady=3)
+        tk.Button(frameFontSize, text=" + ", relief=GROOVE,
+                                       command=lambda: _change_font_size(mode="increase")).pack(side=LEFT)
 
         label_terminal.grid(sticky="W", ipady=10, row=2)
 
@@ -390,21 +394,21 @@ Third line ...
         fontFamilyCombobox.bind("<<ComboboxSelected>>", _update_FontFamilySelected)
         fontFamilyCombobox.grid(sticky="W", ipady=3, row=13, column=1)
 
-        ttk.Button(frameBottom, style="Settings.TButton", text="Restore default", command=_do_restoreDefault).pack(side=LEFT, expand=True)
+        ttk.Button(frameBottom, style="Settings.TButton", text="Restore default", command=_do_restoreDefault).pack(
+            side=LEFT, expand=True)
 
         ttk.Button(frameBottom, style="Settings.TButton", text="OK", command=_do_ok).pack(side=LEFT)
         ttk.Button(frameBottom, style="Settings.TButton", text="Apply", command=_do_apply).pack(side=LEFT)
 
-        ttk.Button(frameBottom, style="Settings.TButton", text="Save config", command=_do_saveConfig).pack(side=LEFT, expand=True)
+        ttk.Button(frameBottom, style="Settings.TButton", text="Save config", command=_do_saveConfig).pack(side=LEFT,
+                                                                                                           expand=True)
 
         s = ttk.Style()
         s.map('Settings.TButton',
-            background=[('disabled','#d9d9d9'), ('active','#ececec')],
-            foreground=[('disabled','#a3a3a3')])
-
+              background=[('disabled', '#d9d9d9'), ('active', '#ececec')],
+              foreground=[('disabled', '#a3a3a3')])
 
         fontSizeFieldText.trace("w", lambda *args: _init_sample())
-
 
         _init()
         _init_sample()

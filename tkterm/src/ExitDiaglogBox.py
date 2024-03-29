@@ -4,7 +4,8 @@ from tkinter import *
 from .Utils import *
 from .Config import TkTermConfig
 
-class ExitDiaglogBox():
+
+class ExitDiaglogBox:
 
     def __init__(self, master, icon):
 
@@ -35,8 +36,8 @@ class ExitDiaglogBox():
         root_height = self.master.winfo_height()
 
         # Work out the new center coordinate
-        x = root_x + (root_width/2) - (width/2)
-        y = root_y + (root_height/2) - (height/2)
+        x = root_x + (root_width / 2) - (width / 2)
+        y = root_y + (root_height / 2) - (height / 2)
 
         # Position dialog box to center
         self.top.geometry("+%d+%d" % (x, y))
@@ -63,17 +64,18 @@ class ExitDiaglogBox():
         frameButton.pack(side=BOTTOM, fill=X)
 
         buttonOptions = {
-            "relief"                : FLAT,
-            "bd"                    : 0,
-            "height"                : 2,
-            "highlightthickness"    : 0,
-            "font"                  : ("Helvetica", 8)
+            "relief": FLAT,
+            "bd": 0,
+            "height": 2,
+            "highlightthickness": 0,
+            "font": ("Helvetica", 8)
         }
 
-        buttonCancel = tk.Button(frameButton, text="Cancel", bg=TkTermConfig.CONFIG["bg"], fg="white", **buttonOptions , command=self._cancel)
+        buttonCancel = tk.Button(frameButton, text="Cancel", bg=TkTermConfig.CONFIG["bg"], fg="white", **buttonOptions,
+                                 command=self._cancel)
         buttonCancel.pack(side=LEFT, pady=0, padx=0, fill=X, expand=True)
 
-        buttonExit = tk.Button(frameButton, text="Exit Terminal", bg="orange", **buttonOptions , command=self._exit)
+        buttonExit = tk.Button(frameButton, text="Exit Terminal", bg="orange", **buttonOptions, command=self._exit)
         buttonExit.pack(side=LEFT, pady=0, padx=0, fill=X, expand=True)
 
         # Fixes for Windows
@@ -94,7 +96,8 @@ class ExitDiaglogBox():
         icon = tk.Label(frameBody, image=self.iconWarn, bg=TkTermConfig.CONFIG["bg"])
         icon.pack(side=LEFT, padx=10)
 
-        label = tk.Label(frameBody, text="Are you sure you want to exit the terminal\nand close all tabs?", bg=TkTermConfig.CONFIG["bg"], fg="white", font=("Helvetica", 8))
+        label = tk.Label(frameBody, text="Are you sure you want to exit the terminal\nand close all tabs?",
+                         bg=TkTermConfig.CONFIG["bg"], fg="white", font=("Helvetica", 8))
         label.pack(side=LEFT, padx=10)
 
         # Wait until top closes before return to root
